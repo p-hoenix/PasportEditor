@@ -1,3 +1,10 @@
+/* Глобальные настройки для всех элементов */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 /* Общие стили для страницы */
 body {
     font-family: Arial, sans-serif;
@@ -7,14 +14,20 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh; /* Минимальная высота 100% экрана */
+    min-height: 100vh;
+    width: 100%;
 }
 
 /* Контейнер формы */
+form {
+    width: 100%;
+    max-width: 1200px;
+}
+
 .form-container {
     width: 100%;
-    max-width: 1200px;  /* Максимальная ширина контейнера */
-    margin: 30px auto;
+    max-width: 1200px;
+    margin: 15px auto;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
@@ -22,80 +35,49 @@ body {
 }
 
 /* Заголовки формы */
-h1 {
+h1, h2, h3 {
     text-align: center;
     color: #333;
-    font-size: 24px;
     margin-bottom: 20px;
 }
 
 /* Общий стиль для строк с метками и полями ввода */
 .input-line {
     display: flex;
-    align-items: center; /* Выравнивание по вертикали */
-    justify-content: flex-start;
-    margin-bottom: 10px;
-    flex-wrap: wrap; /* Перенос элементов на мобильных устройствах */
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 /* Для метки (надписи) */
 .input-line label {
-    margin-right: 10px; /* Отступ между надписью и полем ввода */
+    min-width: 200px;
+    margin-right: 10px;
 }
 
 /* Для полей ввода */
-.input-line input {
-    width: auto;
+.input-line input,
+.input-line select {
+    flex: 1;
+    min-width: 120px;
+    max-width: 200px;
+    padding: 8px;
     font-size: 16px;
-    padding: 5px;
-    margin-right: 15px; /* Отступ между полями */
-    max-width: 200px;  /* Ограничиваем максимальную ширину для небольших данных */
-}
-
-/* Стили для всех текстовых и числовых полей */
-input[type="number"],
-input[type="text"],
-select {
-    width: auto;  /* Автоматическая ширина для компактных полей */
-    padding: 5px;
-    margin: 10px 0;
     border: 1px solid #ddd;
     border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 16px;
-    max-width: 160px;  /* Ограничиваем максимальную ширину для небольших данных */
-}
-input[type="text"],
-select {
-width: auto;  /* Автоматическая ширина для компактных полей */
-padding: 5px;
-margin: 10px 0;
-border: 1px solid #ddd;
-border-radius: 4px;
-box-sizing: border-box;
-font-size: 16px;
-max-width: 200px;  /* Ограничиваем максимальную ширину для небольших данных */
-}
-/* Стили для кнопок */
-button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #45a049;
 }
 
 /* Стили для таблицы */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
 table {
     width: 100%;
-    margin: 20px 0;
+    min-width: 600px;
     border-collapse: collapse;
 }
 
@@ -108,26 +90,38 @@ table td {
 
 table th {
     background-color: #f2f2f2;
-    font-weight: bold;
+    white-space: nowrap;
 }
 
-table td input {
+table td input,
+table td select {
     width: 90%;
+    padding: 8px;
     border: 1px solid #ddd;
-    padding: 5px;
-    box-sizing: border-box;
+    border-radius: 4px;
 }
 
-/* Стили для строки таблицы с удалением */
-.removeRow,
-.removeColumn {
-    padding: 6px 12px;
-    background-color: #f44336;
+/* Стили для кнопок */
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    margin: 5px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.removeRow,
+.removeColumn {
+    padding: 6px 12px;
+    background-color: #f44336;
 }
 
 .removeRow:hover,
@@ -135,9 +129,286 @@ table td input {
     background-color: #e53935;
 }
 
-/* Стили для контейнера дополнительных полей */
-.additional-fields {
-    margin-bottom: 20px;
+/* Стили для комментариев */
+textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Подпись */
+.signature-block {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.signature-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.signature-fields label {
+    margin-right: 5px;
+}
+
+/* Медиа-запросы для адаптивности */
+@media screen and (max-width: 768px) {
+    body {
+        margin: 10px;
+        width: 100%;
+    }
+
+    form, 
+    .form-container {
+        width: 100%;
+        max-width: none;
+    }
+
+    .input-line {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .input-line label {
+        min-width: auto;
+        margin-bottom: 5px;
+    }
+
+    .input-line input,
+    .input-line select {
+        width: 100%;
+        max-width: none;
+    }
+
+    .signature-block {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .signature-fields {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+        margin: 5px 0;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    form,
+    .form-container,
+    .table-container,
+    .signature-block,
+    .input-line {
+        width: 100%;
+        max-width: 100%;
+        min-width: unset;
+        margin: 0;
+        padding: 5px;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .input-line input,
+    .input-line select,
+    textarea {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Стили для таблицы */
+    table {
+        min-width: unset;
+        width: 100%;
+        font-size: 11px;
+    }
+
+    table th,
+    table td {
+        padding: 2px;
+        white-space: nowrap;
+    }
+
+    table td input,
+    table td select {
+        width: 60px;
+        padding: 1px 2px;
+        font-size: 11px;
+        height: 20px;
+    }
+
+    /* Делаем кнопки компактнее */
+    button {
+        padding: 4px 8px;
+        font-size: 12px;
+        height: 24px;
+        margin: 2px;
+    }
+
+    .removeRow,
+    .removeColumn {
+        padding: 2px 4px;
+        font-size: 11px;
+        height: 20px;
+        min-width: 50px;
+    }
+
+    h1, h2, h3 {
+        font-size: 14px;
+        margin: 5px 0;
+    }
+
+    /* Делаем поля подписи более компактными */
+    .signature-block {
+        gap: 5px;
+    }
+
+    .signature-fields {
+        gap: 5px;
+    }
+
+    .signature-fields input {
+        height: 24px;
+        font-size: 12px;
+        width: 100%;
+    }
+
+    /* Уменьшаем textarea */
+    textarea {
+        padding: 4px;
+        height: 50px;
+        font-size: 12px;
+    }
+
+    /* Специальные стили для основной таблицы */
+    .main-table-container {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0;
+        padding: 0;
+    }
+
+    .main-table {
+        font-size: 11px;
+        border-collapse: collapse;
+        white-space: nowrap;
+    }
+
+    .main-table th,
+    .main-table td {
+        padding: 2px;
+    }
+
+    .main-table input[type="number"],
+    .main-table input[type="text"],
+    .main-table select {
+        width: 60px;
+        min-width: 60px;
+        padding: 2px;
+        font-size: 11px;
+        height: 24px;
+    }
+
+    /* Специальные размеры для определенных колонок */
+    .main-table .small-input {
+        width: 40px;
+        min-width: 40px;
+    }
+
+    .main-table .medium-input {
+        width: 60px;
+        min-width: 60px;
+    }
+
+    .main-table .large-input {
+        width: 80px;
+        min-width: 80px;
+    }
+
+    /* Стили для кнопок в таблице */
+    .main-table button {
+        padding: 2px 4px;
+        font-size: 11px;
+        height: 24px;
+        min-width: 40px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    body {
+        min-width: 280px;
+    }
+
+    .form-container {
+        min-width: 280px;
+    }
+
+    table td input,
+    table td select {
+        width: 50px;
+    }
+
+    .input-line label,
+    .input-line input,
+    .input-line select,
+    button {
+        font-size: 11px;
+    }
+}
+
+/* Стили для всех текстовых и числовых полей */
+input[type="number"],
+input[type="text"],
+select {
+    width: auto;
+    padding: 5px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    max-width: 160px;
+}
+
+input[type="text"],
+select {
+    width: auto;
+    padding: 5px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    max-width: 200px;
 }
 
 /* Стили для всех input с классами от, до и total */
@@ -173,7 +444,7 @@ textarea {
 /* Стиль для строки с глубиной */
 #wellDepth {
     display: flex;
-    align-items: center; /* Выравнивание по вертикали */
+    align-items: center;
     justify-content: flex-start;
     font-weight: bold;
     font-size: 18px;
@@ -182,7 +453,7 @@ textarea {
 
 /* Для метки (надписи) */
 #wellDepth label {
-    margin-right: 10px; /* Отступ между надписью и полем ввода */
+    margin-right: 10px;
 }
 
 /* Для поля ввода */
@@ -195,76 +466,6 @@ textarea {
 /* Дополнительные стили для маленьких полей с числовыми значениями */
 .input-line input[type="number"].compact,
 .input-line input[type="text"].compact {
-    width: 80px; /* Ещё больше уменьшаем ширину для компактных полей */
+    width: 80px;
     font-size: 14px;
-}
-
-/* Адаптивные стили для мобильных устройств */
-
-/* Когда ширина экрана меньше 768px (мобильные устройства) */
-@media (max-width: 768px) {
-    .form-container {
-        width: 90%;
-        padding: 15px;
-    }
-
-    h1 {
-        font-size: 20px;
-    }
-
-    /* Уменьшаем размер шрифта для input и select */
-    input[type="number"],
-    input[type="text"],
-    select {
-        font-size: 14px;
-        padding: 8px;
-    }
-
-    /* Уменьшаем размер кнопок */
-    button {
-        font-size: 14px;
-        padding: 8px 16px;
-    }
-
-    /* Уменьшаем отступы в таблице */
-    table th, table td {
-        padding: 8px;
-    }
-
-    /* Уменьшаем шрифт для информации о пользователе */
-    .user-info input {
-        width: 100%;
-    }
-}
-
-/* Когда ширина экрана меньше 480px (очень маленькие экраны) */
-@media (max-width: 480px) {
-    h1 {
-        font-size: 18px;
-    }
-
-    input[type="number"],
-    input[type="text"],
-    select {
-        font-size: 12px;
-        padding: 6px;
-    }
-
-    button {
-        font-size: 12px;
-        padding: 6px 12px;
-    }
-
-    table th, table td {
-        padding: 6px;
-    }
-
-    .user-info {
-        flex-direction: column;
-    }
-
-    .user-info input {
-        width: 100%;
-        margin-bottom: 10px;
-    }
 }
