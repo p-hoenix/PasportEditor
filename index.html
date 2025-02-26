@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Геологічний розріз</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="layers.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        emailjs.init('ZfW0i6YU3Jj566Dql');
+    </script>
+    <script src="script.js" defer></script>
+    <style>
+        .layer-select {
+            width: 100%;
+            padding: 8px;
+        }
+        .layer-category {
+            font-weight: bold;
+            background-color: #f0f0f0;
+        }
+        .layer-option {
+            padding-left: 20px;
+        }
+        .form-container {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .input-line {
+            margin: 10px 0;
+        }
+        .input-line label {
+            display: inline-block;
+            width: 200px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        .add-layer-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h2>Форма для заповнення геологічного розрізу</h2>
+
+    <form id="geologyForm">
+        <!-- Поля до таблицы -->
+        <div class="form-container">
+            <div class="input-line">
+                <label for="absoluteMark">Абсолютна відмітка свердловини:</label>
+                <input type="text" id="absoluteMark" name="absoluteMark" required>
+            </div>
+
+            <div class="input-line">
+                <label for="wellDepth">Глибина свердловини:</label>
+                <input type="number" id="wellDepth" name="wellDepth" readonly style="background: none; border: none;">
+            </div>
+
+            <!-- Геологические слои -->
+            <table id="geologyTable" border="1">
+                <thead>
+                    <tr>
+                        <th>Слой</th>
+                        <th>Від (м)</th>
+                        <th>До (м)</th>
+                        <th>Всього (м)</th>
+                        <th>Дії</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <select name="layer1" class="layer layer-select" required>
+                                <option value="">Виберіть слой...</option>
+                            </select>
+                        </td>
+                        <td><input type="text" name="from1" class="from" required value="0,0"></td>
+                        <td><input type="text" name="to1" class="to" required></td>
+                        <td><input type="text" name="total1" class="total" required readonly></td>
+                        <td><button type="button" class="removeRow">Видалити</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" id="addRow">Додати рядок</button>
+            
+            <!-- Добавление нового слоя -->
+            <div class="add-layer-container">
+                <label for="newLayer">Додати новий шар:</label>
+                <input type="text" id="newLayer" placeholder="Введіть назву шару">
+                <select id="layerCategory">
+                    <option value="Глини">Глини</option>
+                    <option value="Пісковики">Пісковики</option>
+                    <option value="Каоліни">Каоліни</option>
+                    <option value="Граніти">Граніти</option>
+                    <option value="Особливі зони">Особливі зони</option>
+                </select>
+                <button type="button" id="addLayerButton">Додати шар</button>
+            </div>
+        </div>
+
+        <!-- Поля после таблицы -->
+        <div class="form-container">
+            <div class="input-line">
+                <label for="staticLevel">Статичний рівень:</label>
+                <input type="text" id="staticLevel" name="staticLevel" required>
+                <span style="margin-left: 5px;">м</span>
+            </div>
+            <div class="input-line">
+                <label for="dynamicLevel">Динамічний рівень:</label>
+                <input type="text" id="dynamicLevel" name="dynamicLevel" required>
+                <span style="margin-left: 5px;">м</span>
+            </div>
+            <div class="input-line">
+                <label for="wellDebits">Дебіт свердловини:</label>
+                <input type="text" id="wellDebits" name="wellDebits" required>
+                <span style="margin-left: 5px;">м³/год</span>
+            </div>
+        </div>
+
+        <!-- Обсадные трубы -->
+        <h3>Обсадні труби</h3>
+        <div class="form-container">
+            <table id="casingColumnsTable" border="1">
+                <thead>
+                    <tr>
+                        <th>Колона №</th>
+                        <th>Діаметр (мм)</th>
+                        <th>Глибина (м)</th>
+                        <th>Дії</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td><input type="number" name="diameter1" required></td>
+                        <td><input type="number" name="depth1" required></td>
+                        <td><button type="button" class="removeColumn">Видалити</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" id="addCasingColumn">Додати колонну</button>
+        </div>
+
+        <!-- Комментарии и подпись -->
+        <div class="form-container">
+            <label for="comments">Коментар:</label>
+            <textarea id="comments" name="comments" rows="4" cols="50"></textarea>
+            <br><br>
+        
+            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                <div>
+                    <label for="position">Посада:</label>
+                    <input type="text" id="position" name="position" required>
+                    <label for="fullName">ФІО:</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                <button type="submit" id="submitForm">Надіслати</button>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
