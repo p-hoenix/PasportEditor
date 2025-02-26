@@ -355,10 +355,19 @@ document.addEventListener('DOMContentLoaded', function() {
     function addNumberFormatting(inputElement) {
         inputElement.value = '0,0';
         
+        // Обработка ввода для фильтрации символов
         inputElement.addEventListener('input', function(e) {
             let value = e.target.value.replace(/[^\d,.-]/g, '');
             value = value.replace('.', ',');
-            if (value) {
+            e.target.value = value;
+        });
+
+        // Форматирование при потере фокуса
+        inputElement.addEventListener('blur', function(e) {
+            let value = e.target.value;
+            if (!value) {
+                e.target.value = '0,0';
+            } else {
                 const number = parseLocalNumber(value);
                 if (!isNaN(number)) {
                     e.target.value = formatNumber(number);
@@ -366,9 +375,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        inputElement.addEventListener('blur', function(e) {
-            if (!e.target.value) {
-                e.target.value = '0,0';
+        // Форматирование при нажатии Enter
+        inputElement.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                let value = e.target.value;
+                if (!value) {
+                    e.target.value = '0,0';
+                } else {
+                    const number = parseLocalNumber(value);
+                    if (!isNaN(number)) {
+                        e.target.value = formatNumber(number);
+                    }
+                }
+                e.target.blur(); // Убираем фокус с поля
             }
         });
     }
