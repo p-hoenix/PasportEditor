@@ -59,6 +59,67 @@
             gap: 10px;
             margin: 10px 0;
         }
+        .geology-section {
+            margin-bottom: 20px;
+        }
+        .settings-button {
+            margin-left: 10px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .age-settings {
+            margin-top: 20px;
+        }
+        .age-input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .age-input-group input {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        .age-list {
+            margin-top: 20px;
+        }
+        #ageIndexTable {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        #ageIndexTable th, #ageIndexTable td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        #ageIndexTable th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
@@ -74,49 +135,58 @@
 
             <div class="input-line">
                 <label for="wellDepth">Глибина свердловини:</label>
-                <input type="number" id="wellDepth" name="wellDepth" readonly style="background: none; border: none;">
+                <input type="text" id="wellDepth" name="wellDepth" readonly>
+                <span style="margin-left: 5px;">м</span>
             </div>
 
             <!-- Геологические слои -->
-            <div class="main-table-container">
+            <div class="geology-section">
+                <h3>Геологічний розріз</h3>
                 <table id="geologyTable" class="main-table" border="1">
                     <thead>
                         <tr>
-                            <th>Слой</th>
-                            <th>Від (м)</th>
-                            <th>До (м)</th>
-                            <th>Всього (м)</th>
-                            <th>Дії</th>
+                            <th style="width: 22%;">Вік</th>
+                            <th style="width: 33%;">Шар</th>
+                            <th style="width: 11%;">Від (м)</th>
+                            <th style="width: 11%;">До (м)</th>
+                            <th style="width: 11%;">Всього (м)</th>
+                            <th style="width: 12%;">Дії</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
+                            <td><input type="text" name="age1" class="age" required></td>
                             <td>
                                 <select name="layer1" class="layer layer-select" required>
-                                    <option value="">Виберіть слой...</option>
+                                    <option value="">Виберіть шар...</option>
                                 </select>
                             </td>
                             <td><input type="text" name="from1" class="from" required value="0,0"></td>
                             <td><input type="text" name="to1" class="to" required></td>
-                            <td><input type="text" name="total1" class="total" required readonly></td>
+                            <td><input type="text" name="total1" class="total" readonly></td>
                             <td><button type="button" class="removeRow">Видалити</button></td>
                         </tr>
                     </tbody>
                 </table>
-                <button type="button" id="addRow">Додати рядок</button>
-                
+                <div class="button-group">
+                    <button type="button" id="addRow" class="btn-add">Додати рядок</button>
+                    <button type="button" id="openAgeSettings" class="settings-button">
+                        <i class="fas fa-cog"></i> Налаштування індексів
+                    </button>
+                </div>
                 <!-- Добавление нового слоя -->
                 <div class="add-layer-container">
                     <label for="newLayer">Додати новий шар:</label>
-                    <input type="text" id="newLayer" placeholder="Введіть назву шару">
-                    <select id="layerCategory">
+                    <input type="text" id="newLayer" name="newLayer">
+                    <select id="layerCategory" name="category">
+                        <option value="">Виберіть категорію...</option>
                         <option value="Глини">Глини</option>
                         <option value="Пісковики">Пісковики</option>
                         <option value="Каоліни">Каоліни</option>
                         <option value="Граніти">Граніти</option>
                         <option value="Особливі зони">Особливі зони</option>
                     </select>
-                    <button type="button" id="addLayerButton">Додати шар</button>
+                    <button type="button" class="btn-add" id="addLayerButton">Додати</button>
                 </div>
             </div>
 
@@ -145,22 +215,30 @@
                 <table id="casingColumnsTable" border="1">
                     <thead>
                         <tr>
-                            <th>Колона №</th>
-                            <th>Діаметр (мм)</th>
-                            <th>Глибина (м)</th>
-                            <th>Дії</th>
+                            <th style="width: 10%;">Колона №</th>
+                            <th style="width: 30%;">Діаметр (мм)</th>
+                            <th style="width: 50%;">Глибина (м)</th>
+                            <th style="width: 10%;">Дії</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td><input type="number" name="diameter1" required></td>
-                            <td><input type="number" name="depth1" required></td>
+                            <td><input type="text" name="diameter1" required></td>
+                            <td>
+                                <div class="depth-container" style="display: flex; align-items: center; gap: 10px; justify-content: center;">
+                                    <input type="text" class="depth-input" name="depth1_from" placeholder="Від" style="width: 45%;" required>
+                                    <span>-</span>
+                                    <input type="text" class="depth-input" name="depth1_to" placeholder="До" style="width: 45%;" required>
+                                </div>
+                            </td>
                             <td><button type="button" class="removeColumn">Видалити</button></td>
                         </tr>
                     </tbody>
                 </table>
-                <button type="button" id="addCasingColumn">Додати колонну</button>
+                <div class="add-column-container">
+                    <button type="button" class="btn-add" id="addCasingColumn">Додати колону</button>
+                </div>
             </div>
 
             <!-- Комментарии и подпись -->
@@ -181,5 +259,62 @@
             </div>
         </div>
     </form>
+
+<!-- Модальное окно для настроек индексов -->
+<div id="ageSettingsModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Налаштування індексів</h2>
+        <div class="add-index-form">
+            <div class="input-group">
+                <input type="text" id="newAgeIndex" placeholder="Індекс (N₁S₂)">
+                <input type="text" id="newAgeName" placeholder="Назва (сарматський)">
+            </div>
+            <button type="button" id="addAgeIndex">Додати</button>
+        </div>
+        <table id="ageIndexTable">
+            <thead>
+                <tr>
+                    <th>Індекс</th>
+                    <th>Назва</th>
+                    <th>Дії</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Модальное окно для настроек слоев -->
+<div id="layerSettingsModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Налаштування слоів</h2>
+        <div class="add-layer-form">
+            <div class="input-group">
+                <input type="text" id="newLayer" placeholder="Назва слоя">
+                <select id="layerCategory" name="category">
+                    <option value="">Виберіть категорію...</option>
+                    <option value="Глини">Глини</option>
+                    <option value="Пісковики">Пісковики</option>
+                    <option value="Каоліни">Каоліни</option>
+                    <option value="Граніти">Граніти</option>
+                    <option value="Особливі зони">Особливі зони</option>
+                </select>
+            </div>
+            <button type="button" class="btn-add" id="addLayerButton">Додати</button>
+        </div>
+        <table id="layerTable">
+            <thead>
+                <tr>
+                    <th>Назва</th>
+                    <th>Категорія</th>
+                    <th>Дії</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
 </body>
 </html>

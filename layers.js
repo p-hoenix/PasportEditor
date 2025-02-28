@@ -1,6 +1,6 @@
 // Категории геологических слоев
 const layerCategories = {
-    'Глини': [
+'Глини': [
         'Глина',
         'Глина біло-зелена з прошарками піску',
         'Глина жовта',
@@ -79,28 +79,76 @@ const layerCategories = {
         'Тріщинувата зона сіро-білий камінь',
         'Чорнозем'
     ]
-}
-
+};
 
 // Получить все слои в виде плоского массива
 function getAllLayers() {
     return Object.values(layerCategories).flat();
 }
 
-// Добавить новый слой в соответствующую категорию
-function addNewLayer(layer, category = 'Особливі зони') {
-    if (layerCategories[category]) {
-        if (!layerCategories[category].includes(layer)) {
-            layerCategories[category].push(layer);
-            return true;
-        }
-    }
-    return false;
+// Получить все категории
+function getCategories() {
+    return Object.keys(layerCategories);
 }
+
+// Добавить новую категорию
+function addNewCategory(category) {
+    if (!category || layerCategories.hasOwnProperty(category)) {
+        return false;
+    }
+    
+    layerCategories[category] = [];
+    saveToLocalStorage();
+    return true;
+}
+
+// Добавить новый слой в соответствующую категорию
+function addNewLayer(layer, category) {
+    if (!category || !layerCategories.hasOwnProperty(category)) {
+        return false;
+    }
+    
+    // Проверяем, существует ли уже такой слой в любой категории
+    if (getAllLayers().includes(layer)) {
+        return false;
+    }
+    
+    // Добавляем новый слой
+    layerCategories[category].push(layer);
+    saveToLocalStorage();
+    return true;
+}
+
+// Сохранение в localStorage
+function saveToLocalStorage() {
+    try {
+        localStorage.setItem('geologicalLayers', JSON.stringify(layerCategories));
+    } catch (e) {
+        console.error('Ошибка при сохранении слоев:', e);
+    }
+}
+
+// Загрузка сохраненных слоев при инициализации
+function initializeLayers() {
+    try {
+        const savedLayers = localStorage.getItem('geologicalLayers');
+        if (savedLayers) {
+            const parsed = JSON.parse(savedLayers);
+            Object.assign(layerCategories, parsed);
+        }
+    } catch (e) {
+        console.error('Ошибка при загрузке слоев:', e);
+    }
+}
+
+// Инициализируем слои при загрузке скрипта
+initializeLayers();
 
 // Экспортируем функции и данные
 window.geologicalLayers = {
     categories: layerCategories,
-    getAllLayers,
-    addNewLayer
+    getAllLayers: getAllLayers,
+    getCategories: getCategories,
+    addNewLayer: addNewLayer,
+    addNewCategory: addNewCategory
 };

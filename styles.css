@@ -101,32 +101,195 @@ table td select {
     border-radius: 4px;
 }
 
-/* Стили для кнопок */
+/* Базовые стили для всех кнопок */
 button {
-    padding: 10px 20px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+    color: white;
+}
+
+/* Стили для основных кнопок (синие) */
+button {
+    background-color: #007bff;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:active {
+    background-color: #004085;
+}
+
+/* Стили для группы кнопок геологии */
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Зеленые кнопки */
+#addRow, #addCasingColumn {
+    padding: 8px 16px;
     background-color: #4CAF50;
+    min-width: 160px;
+    text-align: center;
+}
+
+#addRow:hover, #addCasingColumn:hover {
+    background-color: #45a049;
+}
+
+#addRow:active, #addCasingColumn:active {
+    background-color: #3d8b40;
+}
+
+/* Красные кнопки удаления */
+.removeRow, 
+.removeColumn, 
+.deleteAgeIndex, 
+button[class*="delete"], 
+button[class*="remove"] {
+    background-color: #dc3545 !important;
+    padding: 5px 10px;
+}
+
+.removeRow:hover, 
+.removeColumn:hover, 
+.deleteAgeIndex:hover,
+button[class*="delete"]:hover, 
+button[class*="remove"]:hover {
+    background-color: #c82333 !important;
+}
+
+.removeRow:active, 
+.removeColumn:active, 
+.deleteAgeIndex:active,
+button[class*="delete"]:active, 
+button[class*="remove"]:active {
+    background-color: #bd2130 !important;
+}
+
+.settings-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-width: 160px;
+}
+
+/* Стили для модального окна */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 53%;
+    max-width: 80%;
+    border-radius: 5px;
+    position: relative;
+}
+
+.add-index-form {
+    margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.input-group input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Стили для таблицы индексов */
+#ageIndexTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    table-layout: fixed;
+}
+
+#ageIndexTable th,
+#ageIndexTable td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #dee2e6;
+    word-wrap: break-word;
+}
+
+#ageIndexTable th:nth-child(1),
+#ageIndexTable td:nth-child(1) {
+    width: 30%;
+}
+
+#ageIndexTable th:nth-child(2),
+#ageIndexTable td:nth-child(2) {
+    width: 50%;
+}
+
+#ageIndexTable th:nth-child(3),
+#ageIndexTable td:nth-child(3) {
+    width: 20%;
+}
+
+.deleteAgeIndex {
+    padding: 5px 10px;
+    background-color: #dc3545;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-    margin: 5px;
 }
 
-button:hover {
-    background-color: #45a049;
+.deleteAgeIndex:hover {
+    background-color: #c82333;
 }
 
-.removeRow,
-.removeColumn {
-    padding: 6px 12px;
-    background-color: #f44336;
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.removeRow:hover,
-.removeColumn:hover {
-    background-color: #e53935;
+.close:hover {
+    color: black;
+}
+/* Стили для кнопок добавления новой колонки */
+.btn-add {
+    background-color: #6eab5c;
+    color: white;
+}
+
+.btn-add:hover {
+    background-color: #138496;
+}
+
+.btn-add:active {
+    background-color: #117a8b;
 }
 
 /* Стили для комментариев */
@@ -389,7 +552,7 @@ textarea {
 input[type="number"],
 input[type="text"],
 select {
-    width: auto;
+    width: 100%;
     padding: 5px;
     margin: 10px 0;
     border: 1px solid #ddd;
@@ -401,7 +564,7 @@ select {
 
 input[type="text"],
 select {
-    width: auto;
+    width: 100%;
     padding: 5px;
     margin: 10px 0;
     border: 1px solid #ddd;
@@ -468,4 +631,141 @@ textarea {
 .input-line input[type="text"].compact {
     width: 80px;
     font-size: 14px;
+}
+
+/* Стили для кнопки настроек */
+.settings-button {
+    background-color: #297072c0;
+    border: 1px solid #ffffff;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.settings-button:hover {
+    background-color: #4a6934;
+}
+
+/* Стили для добавления слоя и категории */
+.add-layer-container {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+}
+
+.layer-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.add-layer-form,
+.add-category-form {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 15px;
+    align-items: center;
+}
+
+.add-layer-form label,
+.add-category-form label {
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.add-layer-form input,
+.add-layer-form select,
+.add-category-form input {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.add-layer-form button,
+.add-category-form button {
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.add-layer-form button:hover,
+.add-category-form button:hover {
+    background-color: #218838;
+}
+
+/* Разделитель между формами */
+.layer-actions > *:not(:last-child) {
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 20px;
+}
+
+/* Стили для таблицы колонн */
+#casingColumnsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+#casingColumnsTable th,
+#casingColumnsTable td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #dee2e6;
+}
+
+#casingColumnsTable th {
+    background-color: #f8f9fa;
+}
+
+.depth-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+
+.depth-input {
+    width: 45%;
+    padding: 5px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.removeColumn {
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.removeColumn:hover {
+    background-color: #c82333;
+}
+
+#addCasingColumn {
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#addCasingColumn:hover {
+    background-color: #218838;
 }
