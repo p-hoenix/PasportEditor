@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="styles.css">
     <script src="layers.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script>
-        emailjs.init('ZfW0i6YU3Jj566Dql');
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("ZfW0i6YU3Jj566Dql"); // Замените на ваш публичный ключ
+        })();
     </script>
     <script src="script.js" defer></script>
     <style>
@@ -259,6 +261,62 @@
             </div>
         </div>
     </form>
+
+    <template id="printTemplate">
+        <h2>Геологічний розріз</h2>
+        <p><strong>Абсолютна відмітка свердловини:</strong> {{absoluteMark}} м</p>
+        <p><strong>Глибина свердловини:</strong> {{wellDepth}} м</p>
+
+        <h3>Геологічні шари:</h3>
+        <table class="print-table">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Від (м)</th>
+                    <th>До (м)</th>
+                    <th>Потужність (м)</th>
+                    <th>Індекс</th>
+                    <th>Опис породи</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{{layers}}}
+            </tbody>
+        </table>
+
+        <h3>Обсадні труби:</h3>
+        <table class="print-table">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Діаметр (мм)</th>
+                    <th>Інтервал (м)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{{casingColumns}}}
+            </tbody>
+        </table>
+
+        <div class="well-parameters">
+            <h3>Параметри свердловини:</h3>
+            <p><strong>Статичний рівень:</strong> {{staticLevel}} м</p>
+            <p><strong>Динамічний рівень:</strong> {{dynamicLevel}} м</p>
+            <p><strong>Дебіт свердловини:</strong> {{wellDebits}} л/с</p>
+        </div>
+
+        <div class="comments-section">
+            <h3>Примітки:</h3>
+            <p>{{comments}}</p>
+        </div>
+
+        <div class="author-section">
+            <h3>Автор:</h3>
+            <p><strong>Посада:</strong> {{position}}</p>
+            <p><strong>ПІБ:</strong> {{fullName}}</p>
+            <p class="date">Дата: {{currentDate}}</p>
+        </div>
+    </template>
 
 <!-- Модальное окно для настроек индексов -->
 <div id="ageSettingsModal" class="modal">

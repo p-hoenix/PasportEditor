@@ -769,3 +769,45 @@ textarea {
 #addCasingColumn:hover {
     background-color: #218838;
 }
+
+/* Стили для печатной версии */
+@media print {
+    .print-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+
+    .print-table th,
+    .print-table td {
+        padding: 8px;
+        text-align: center;
+        border: 1px solid #000;
+    }
+
+    .print-table th {
+        background-color: #f5f5f5;
+    }
+
+    .well-parameters,
+    .comments-section,
+    .author-section {
+        margin: 20px 0;
+    }
+
+    .comments-section {
+        white-space: pre-wrap;
+    }
+
+    .date {
+        margin-top: 20px;
+    }
+
+    /* Скрываем элементы управления при печати */
+    .modal,
+    .btn,
+    button,
+    .controls {
+        display: none !important;
+    }
+}

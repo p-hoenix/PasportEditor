@@ -1,6 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
     
+    // Предотвращаем стандартную отправку формы
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        sendEmail();
+    });
+
     // Функция форматирования числа
     function formatNumber(num) {
         return Number(num).toFixed(1).replace('.', ',');
@@ -425,6 +431,111 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Будь ласка, введіть назву категорії!');
             }
         });
+    }
+
+    // Функция создания HTML таблицы геологических слоев
+    function createGeologyTableHtml() {
+        let html = `
+            <table style="width:100%; border-collapse: collapse; margin: 10px 0;">
+                <thead>
+                    <tr style="background-color: #f8f9fa;">
+                        <th style="border: 1px solid #dee2e6; padding: 8px; text-align: center;">№</th>
+                        <th style="border: 1px solid #dee2e6; padding: 8px; text-align: center;">Від (м)</th>
+                        <th style="border: 1px solid #dee2e6; padding: 8px; text-align: center;">До (м)</th>
+                        <th style="border: 1px solid #dee2e6; padding: 8px; text-align: center;">Потужність (м)</th>
+                        <th style="border: 1px solid #dee2e6; padding: 8px; text-align: center;">Індекс</th>
+                        <th style="border: 1px solid #dee2e6; padding: 8px; text-align: center;">Опис породи</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        document.querySelectorAll('#geologyTable tbody tr').forEach((row, index) => {
+            const from = row.querySelector('.from').value;
+            const to = row.querySelector('.to').value;
+            const total = row.querySelector('.total').value;
+            const age = row.querySelector('.age').value;
+            const layer = row.querySelector('.layer').value;
+            
+            html += `
+                <tr>
+                    <td style="border: 1px solid #dee2e6; padding: 8px; text-align: center;">${index + 1}</td>
+                    <td style="border: 1px solid #dee2e6; padding: 8px; text-align: center;">${from}</td>
+                    <td style="border: 1px solid #dee2e6; padding: 8px; text-align: center;">${to}</td>
+                    <td style="border: 1px solid #dee2e6; padding: 8px; text-align: center;">${total}</td>
+                    <td style="border: 1px solid #dee2e6; padding: 8px; text-align: center;">${age}</td>
+                    <td style="border: 1px solid #dee2e6; padding: 8px; text-align: left;">${layer}</td>
+                </tr>
+            `;
+        });
+
+        return html + '</tbody></table>';
+    }
+
+    // Функция создания HTML таблицы обсадных труб
+    function createCasingTableHtml() {
+        let html = `
+            <table style="width:100%; border-collapse: collapse; margin: 10px 0;">
+                <thead>
+                    <tr style="background-color: #f8f9fa;">
+                        <th style="border: 1px solid #dee2e6; padding: 8px; text-align: center;">№</th>
+                        <th style="border: 1px solid #dee2e6; padding: 8px; text-align: center;">Діаметр (мм)</th>
+                        <th style="border: 1px solid #dee2e6; padding: 8px; text-align: center;">Інтервал (м)</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        document.querySelectorAll('#casingColumnsTable tbody tr').forEach((row, index) => {
+            const diameter = row.querySelector('input[name^="diameter"]').value;
+            const depthFrom = row.querySelector('input[name$="_from"]').value;
+            const depthTo = row.querySelector('input[name$="_to"]').value;
+            
+            html += `
+                <tr>
+                    <td style="border: 1px solid #dee2e6; padding: 8px; text-align: center;">${index + 1}</td>
+                    <td style="border: 1px solid #dee2e6; padding: 8px; text-align: center;">Ø${diameter}</td>
+                    <td style="border: 1px solid #dee2e6; padding: 8px; text-align: center;">${depthFrom}-${depthTo}</td>
+                </tr>
+            `;
+        });
+
+        return html + '</tbody></table>';
+    }
+
+    // Отправка данных через EmailJS
+    function sendEmail() {
+        const form = document.querySelector('form');
+        let totalDepth = 0;
+
+        // Получаем максимальную глубину
+        document.querySelectorAll('#geologyTable tbody tr').forEach(row => {
+            const toValue = parseLocalNumber(row.querySelector('.to').value);
+            if (toValue > totalDepth) totalDepth = toValue;
+        });
+
+        // Формируем данные для отправки
+        const templateParams = {
+            absoluteMark: form.querySelector('#absoluteMark').value,
+            wellDepth: totalDepth.toFixed(1).replace('.', ','),
+            layers: createGeologyTableHtml(),
+            casingColumns: createCasingTableHtml(),
+            staticLevel: form.querySelector('#staticLevel').value,
+            dynamicLevel: form.querySelector('#dynamicLevel').value,
+            wellDebits: form.querySelector('#wellDebits').value,
+            comments: form.querySelector('#comments').value || '(не вказано)',
+            position: form.querySelector('#position').value,
+            fullName: form.querySelector('#fullName').value,
+            currentDate: new Date().toLocaleDateString('uk-UA')
+        };
+
+        // Отправляем данные
+        emailjs.send('service_hnizmjj', 'template_rgbcnbz', templateParams)
+            .then(function(response) {
+                alert('Дані успішно відправлено!');
+            }, function(error) {
+                alert('Помилка відправки: ' + error);
+            });
     }
 
     initializeLayerSelects();
